@@ -1,9 +1,14 @@
 const express = require('express')
+const cors = require('cors')
 const path = require('path')
 const app = express()
 const port = process.env.PORT || 3000
 const userRouter = require('./src/routes/users')
 
+
+app.use(cors({
+    origin: 'http://localhost:5173/'
+}))
 //Add JSON body parsing middleware (built in middlware function (express.json()))
 app.use(express.json())
 
@@ -17,8 +22,8 @@ app.get('/api/health', (req, res) => {
     res.json({message: "Backend is connected"})
 })
 
-app.get("/about", (req, res) => {
-    res.send("This is the about page")
+app.get('/api/about', (req, res) => {
+    res.json({message:"This is the about page"})
 })
 
 app.post("/data", (req, res) => {
@@ -41,7 +46,7 @@ app.get('/search', (req, res) => {
 //     })
 // })
 
-app.use('/users', userRouter)
+app.use('api/users', userRouter)
 
 app.use((req, res) => {
     res.status(404).send("Not Found")
