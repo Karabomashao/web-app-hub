@@ -6,9 +6,9 @@ const port = process.env.PORT || 3000
 const userRouter = require('./src/routes/users')
 
 
-app.use(cors({
-    origin: 'http://localhost:5173/'
-}))
+// app.use(cors({
+//     origin: 'http://localhost:5173/'
+// }))
 //Add JSON body parsing middleware (built in middlware function (express.json()))
 app.use(express.json())
 
@@ -46,7 +46,7 @@ app.get('/search', (req, res) => {
 //     })
 // })
 
-app.use('api/users', userRouter)
+app.use('/api/users', userRouter)
 
 app.use((req, res) => {
     res.status(404).send("Not Found")

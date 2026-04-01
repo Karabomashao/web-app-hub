@@ -1,28 +1,23 @@
 const express = require('express')
 const router = express.Router()
+const requireAuth = require('../middleware/requireAuth')
+
 
 router.use((req, res, next) =>{
-   console.log(`Users route hit: ${req.method} ${req.originalUrl}`)
-   next()
+    console.log(`Users router hit ${req.method} and ${req.originalUrl}`)
+    next()
 })
 
-router.get('/:id', (req, res, next) => {
-        console.log("First handler")
-        next()
-    },
-    (req, res) => {
+router.get('/:id', requireAuth, (req, res) => {
         res.send(`User ID: ${req.params.id}`)
     }
 )
 
-
-
-router.get('/error/test', (req, res, next) => {
+router.get('/error/test', (req, res, next) =>{
     next(new Error("Test error"))
 })
 
-
-router.post('/', (req, res) => {
+router.post('/', requireAuth, (req, res) =>{
     res.json({
         message: 'User created',
         data: req.body
