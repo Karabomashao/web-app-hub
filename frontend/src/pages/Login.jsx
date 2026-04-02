@@ -38,7 +38,6 @@ export default function Login(){
 
     async function getProtectedUser(){
         try {
-            console.log("check_2")
             const res = await fetch('http://localhost:3000/api/users/123', {
                 headers: {
                     Authorization: `Bearer ${token}`
