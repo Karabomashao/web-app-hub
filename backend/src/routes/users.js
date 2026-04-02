@@ -9,7 +9,7 @@ router.use((req, res, next) =>{
 })
 
 router.get('/:id', requireAuth, (req, res) => {
-        res.send(`User ID: ${req.params.id}`)
+        res.json({User_ID: req.params.id})
     }
 )
 
