@@ -3,16 +3,16 @@ const jwt = require('jsonwebtoken')
 function requireAuth(req, res, next){
     const authHeader = req.get('Authorization')
     
-
+    // console.log(authHeader)
     if(!authHeader){
         return res.status(401).json({error: 'Unauthorized'})
     }
     
     const token = authHeader.replace('Bearer ', '')
-    console.log(token)
 
     try{
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        console.log(decoded)
         req.user = decoded
         next()
     } catch (err) {

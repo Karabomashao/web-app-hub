@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken')
 const {authenticateUser} = require('../services/authServices')
 
 function login(req, res){
-    const { username, passworrd } = req.body
+    const { username, password } = req.body
     
-    const token = authenticateUser(username, passworrd)
+    const token = authenticateUser(username, password)
 
     if (!token){
         return res.status(401).json({error: 'Invalid credentials'})

@@ -9,7 +9,19 @@ router.use((req, res, next) =>{
 })
 
 router.get('/:id', requireAuth, (req, res) => {
-        res.json({User_ID: req.params.id})
+
+    const requestUserId = Number(req.params.id)
+
+
+    if (requestUserId !== req.user.id){
+        return res.status(403).json({error : 'Forbidden'})
+    }
+
+    res.json(
+        {
+            message:`User ID: ${req.params.id}`,
+            authenticateUser: req.user
+        })
     }
 )
 
@@ -20,7 +32,8 @@ router.get('/error/test', (req, res, next) =>{
 router.post('/', requireAuth, (req, res) =>{
     res.json({
         message: 'User created',
-        data: req.body
+        data: req.body,
+        authenticateUser: req.user
     })
 })
 

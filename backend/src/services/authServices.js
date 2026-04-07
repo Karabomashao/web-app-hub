@@ -1,14 +1,19 @@
 const jwt = require('jsonwebtoken')
+const users = require('../data/users')
 
 
 function authenticateUser(username, password){
-    if (username !== 'admin' || password !== 'pass123'){
+    const user = users.find((user) => {
+        return user.username === username && user.password === password 
+    })
+
+    if (!user){
         return null
     }
 
     const token = jwt.sign(
-        {username: 'admin'},
-        process.env.JWT_TOKEN,
+        {id: user.id, username: 'admin'},
+        process.env.JWT_SECRET,
         {expiresIn: '1h'}
     )
 
