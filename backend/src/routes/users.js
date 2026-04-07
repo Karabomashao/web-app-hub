@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const requireAuth = require('../middleware/requireAuth')
+const requireSelf = require('../middleware/requireSelf')
 
 
 router.use((req, res, next) =>{
@@ -8,14 +9,7 @@ router.use((req, res, next) =>{
     next()
 })
 
-router.get('/:id', requireAuth, (req, res) => {
-
-    const requestUserId = Number(req.params.id)
-
-
-    if (requestUserId !== req.user.id){
-        return res.status(403).json({error : 'Forbidden'})
-    }
+router.get('/:id', requireAuth, requireSelf, (req, res) => {
 
     res.json(
         {

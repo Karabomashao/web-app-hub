@@ -12,7 +12,7 @@ function authenticateUser(username, password){
     }
 
     const token = jwt.sign(
-        {id: user.id, username: 'admin'},
+        {id: user.id, username: 'admin', role: users.role},
         process.env.JWT_SECRET,
         {expiresIn: '1h'}
     )
