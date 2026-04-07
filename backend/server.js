@@ -4,7 +4,6 @@ const path = require('path')
 const app = express()
 const port = process.env.PORT || 3000
 const userRouter = require('./src/routes/users')
-const jwt = require('jsonwebtoken')
 const authRouter = require('./src/routes/auth')
 
 
@@ -16,22 +15,6 @@ app.use(cors({
 app.use(express.json())
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
-
-// app.post('/api/login', (req, res) =>{
-//     const { username, password } = req.body
-
-//     if (username !== 'admin' || password !== 'pass123'){
-//         return res.status(401).json({error: 'Invalid credentials'})
-//     }
-
-//     const token = jwt.sign(
-//         {username: 'admin'},
-//         process.env.JWT_SECRET,
-//         {expiresIn: '1h'}
-//     )
-
-//     res.json({token})
-// })
 
 app.use('/api/auth', authRouter)
 
@@ -79,5 +62,5 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`)
+  console.log(`Backend app listening on port http://localhost:${port}`)
 })
