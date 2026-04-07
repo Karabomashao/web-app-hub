@@ -1,19 +1,17 @@
 const jwt = require('jsonwebtoken')
+const {authenticateUser} = require('../services/authServices')
 
 function login(req, res){
     const { username, passworrd } = req.body
+    
+    const token = authenticateUser(username, passworrd)
 
-    if (username !== 'admin' || passworrd !== 'pass123'){
+    if (!token){
         return res.status(401).json({error: 'Invalid credentials'})
     }
 
-    const token = jwt.sign(
-        {username: 'admin'},
-        process.env.JWT_SECRET,
-        {expiresIn: '1h'}
-    )
-
     res.json({token})
+
 }
 
 module.exports = {
