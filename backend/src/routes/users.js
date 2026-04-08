@@ -5,7 +5,7 @@ const requireSelf = require('../middleware/requireSelf')
 const requireRole = require('../middleware/requireROle')
 const users = require('../data/users')
 const sanitizeUser = require('../utils/sanitizeUser')
-const { authenticateUser } = require('../services/authServices')
+const generateUserId = require('../utils/generateUserId')
 
 router.use((req, res, next) =>{
     console.log(`Users router hit ${req.method} and ${req.originalUrl}`)
@@ -45,11 +45,32 @@ router.get('/', requireAuth, requireRole('admin'), (req, res) =>{
 })
 
 router.post('/', requireAuth, requireRole('admin'), (req, res) =>{
+    const { username, password , role } = req.body
+    
+    const existingUser = users.find( (user) => {
+        return user.username === username
+    })
+
+    if (existingUser){
+        return res.status(409).json({error : 'Username already exists'})
+    }
+
+    const newUser = {
+        id: generateUserId(users),
+        username,
+        password,
+        role: role || 'user'
+    }
+
+    users.push(newUser)
+
     res.json({
         message: 'User created',
-        data: req.body,
-        authenticateUser: req.user
+        user: sanitizeUser(newUser),
+        authenticatedUser: sanitizeUser(req.user)
     })
+
+    
 })
 
 module.exports = router
