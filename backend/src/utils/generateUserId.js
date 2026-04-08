@@ -5,7 +5,7 @@ function generateUserId(users){
 
     const maxId = users.reduce((max, user) => {
         return user.id > max ? user.id : max
-    })
+    }, 0)
 
     return maxId + 1
 }
