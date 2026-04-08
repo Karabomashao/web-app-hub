@@ -1,7 +1,8 @@
 function requireSelf(req, res, next){
     const requestUserId = Number(req.params.id)
 
-    if (req.user.id === 'admin'){
+
+    if (req.user.role === 'admin'){
         return next()
     }
 
