@@ -4,6 +4,7 @@ function requireRole(role){
             return res.status(401).json({error : 'Unauthorized'})
         }
 
+        console.log(req.user)
         if (req.user.role !== role){
             return res.status(403).json({error: 'Forbidden'})
         }

@@ -7,12 +7,17 @@ function authenticateUser(username, password){
         return user.username === username && user.password === password 
     })
 
+
     if (!user){
         return null
     }
 
     const token = jwt.sign(
-        {id: user.id, username: 'admin', role: users.role},
+        {
+            id: user.id, 
+            username: user.username, 
+            role: user.role
+        },
         process.env.JWT_SECRET,
         {expiresIn: '1h'}
     )

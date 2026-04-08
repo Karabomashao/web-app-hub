@@ -5,6 +5,7 @@ const requireSelf = require('../middleware/requireSelf')
 const requireRole = require('../middleware/requireROle')
 const users = require('../data/users')
 const sanitizeUser = require('../utils/sanitizeUser')
+const { authenticateUser } = require('../services/authServices')
 
 router.use((req, res, next) =>{
     console.log(`Users router hit ${req.method} and ${req.originalUrl}`)
@@ -22,8 +23,6 @@ router.get('/:id', requireAuth, requireSelf, (req, res) => {
         return res.status(404).json({error: 'User not found'})
     }
 
-
-
     res.json(
         {
             user: sanitizeUser(user),
@@ -34,6 +33,15 @@ router.get('/:id', requireAuth, requireSelf, (req, res) => {
 
 router.get('/error/test', (req, res, next) =>{
     next(new Error("Test error"))
+})
+
+router.get('/', requireAuth, requireRole('admin'), (req, res) =>{
+    const safeUser = users.map((user) => sanitizeUser(user))
+
+    res.json({
+        user: safeUser,
+        authenticateUser: req.user
+    })
 })
 
 router.post('/', requireAuth, requireRole('admin'), (req, res) =>{
