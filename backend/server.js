@@ -3,8 +3,11 @@ const cors = require('cors')
 const path = require('path')
 const app = express()
 const port = process.env.PORT || 3000
+
+
 const userRouter = require('./src/routes/users')
 const authRouter = require('./src/routes/auth')
+const { connectDB } = require('./src/config/db')
 
 
 app.use(cors({
@@ -17,6 +20,8 @@ app.use(express.json())
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.use('/api/auth', authRouter)
+app.use('/api/users', userRouter)
+
 
 app.get('/', (req, res) => {
   res.send('Backend is running')
@@ -34,23 +39,10 @@ app.post("/data", (req, res) => {
     res.json({received: req.body})
 })
 
-// Add a dynamic route
-// app.get('/users/:id', (req, res) => {
-//     res.send(`User Id : ${req.params.id}`)
-// })
-
 app.get('/search', (req, res) => {
     res.send(`Search term : ${req.query.q}` )
 })
 
-// app.post('/users', (req, res) => {
-//     res.json({
-//         message: "User created",
-//         data: req.body
-//     })
-// })
-
-app.use('/api/users', userRouter)
 
 app.use((req, res) => {
     res.status(404).send("Not Found")
@@ -61,6 +53,17 @@ app.use((err, req, res, next) => {
     res.status(500).json({error: "something broke"})
 })
 
-app.listen(port, () => {
-  console.log(`Backend app listening on port http://localhost:${port}`)
-})
+async function startServer(){
+    try{
+        await connectDB()
+
+        app.listen(port, () => {
+            console.log(`Backend app listening on http://localhost:${port}`)
+        })
+    } catch (error) {
+        console.error('Failed to start server', error)
+        process.exit(1)
+    }
+}
+
+startServer()
