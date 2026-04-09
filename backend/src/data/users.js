@@ -2,7 +2,7 @@ const users = [
     {
         id: 1,
         username: 'admin',
-        password: 'pass123',
+        password: '$2b$10$qN9Qd6Vzyx.NnpwMwady0.vhjglyHz5ygg8LIduQRdav6oQBkf/X2',
         role: 'admin'
     },
 

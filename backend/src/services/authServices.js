@@ -50,6 +50,8 @@ async function registerUser({ username, password, role = 'user' }) {
     role,
   }
 
+  console.log(hashedPassword)
+
   users.push(newUser)
 
   return newUser
