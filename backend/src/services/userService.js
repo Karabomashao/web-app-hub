@@ -55,10 +55,24 @@ function updateUser(id, updates){
 
 }
 
+function deleteUser(id) {
+  const index = users.findIndex((user) => user.id === id)
+
+  if (index === -1) {
+    return null
+  }
+
+  const deletedUser = users[index]
+  users.splice(index, 1)
+
+  return deletedUser
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
     getUserByUsername,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
