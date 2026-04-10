@@ -1,33 +1,34 @@
-import sql from 'mssql'
+const { getPool } = require('../config/db')
+const getAllUsers = require('../repositories/userRepository')
+const { hashPassword } = require('../services/authServices')
+const { sql } = require('../config/db')
 
-export default async function connectDB(){
+async function registerUser({username, password, role}){
 
-    const config = {
-        server: process.env.AZURE_SQL_SERVER,
-        port: parseInt(process.env.AZURE_SQL_PORT, 10),
-        database: process.env.AZURE_SQL_DATABASE,
-        authentication: {
-            type: "azure-active-directory-default",
-        },
-        options: {
-        encrypt: true,
-        trustServerCertificate: false,
-        },
-        connectionTimeout: 30000,
-        requestTimeout: 30000,
+    const users = await getAllUsers()
+    const existingUser = users.find((user) => user.username === username)
+
+    if (existingUser){
+        return null
     }
 
-    try {
-        console.log("AZURE_SQL_SERVER:", process.env.AZURE_SQL_SERVER);
-        console.log("AZURE_SQL_DATABASE:", process.env.AZURE_SQL_DATABASE);
-        console.log("AZURE_SQL_PORT:", process.env.AZURE_SQL_PORT);
-
-        await sql.connect(config);
-        console.log("Connected to Azure SQL with Microsoft Entra ID!");
+    const hashedPassword = await hashPassword(password)
     
-    } catch (error) {
-        console.log("Connection failed", error);
-        throw error;
-    }
+
+    const pool = await getPool()
+
+    const result = pool
+        .request()
+        .input('email', sql.NVarChar(225), username)
+        .input('hashedPassword', sql.NVarChar(sql.MAX), hashedPassword)
+        .input('role', sql.NVarChar(50), role)
+        .query(`
+            INSERT INTO Users (Email, PasswordHash, Role)
+            VALUES (@email, @hashedPassword, @role)
+            `)
+        
+    return result
 
 }
+
+module.exports = registerUser

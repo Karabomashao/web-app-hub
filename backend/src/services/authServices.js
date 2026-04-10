@@ -2,15 +2,20 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const users = require('../data/users')
 const generateUserId = require('../utils/generateUserId')
+const { getPool } = require('../config/db')
+const getAllUsers = require('../repositories/userRepository')
 
 async function authenticateUser(username, password) {
-  const user = users.find((user) => user.username === username)
+  
+  const users = await getAllUsers()
+  const user = users.find((user) => user.Email === username)
+  console.log(user)
 
   if (!user) {
     return null
   }
 
-  const passwordMatches = await bcrypt.compare(password, user.password)
+  const passwordMatches = await bcrypt.compare(password, user.PasswordHash)
 
   if (!passwordMatches) {
     return null
@@ -18,9 +23,9 @@ async function authenticateUser(username, password) {
 
   const token = jwt.sign(
     {
-      id: user.id,
-      username: user.username,
-      role: user.role,
+      id: user.Id,
+      username: user.Email,
+      role: user.Role,
     },
     process.env.JWT_SECRET,
     { expiresIn: '1h' }
@@ -50,7 +55,6 @@ async function registerUser({ username, password, role = 'user' }) {
     role,
   }
 
-  console.log(hashedPassword)
 
   users.push(newUser)
 

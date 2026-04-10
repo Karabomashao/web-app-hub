@@ -4,6 +4,8 @@ const path = require('path')
 const app = express()
 const port = process.env.PORT || 3000
 
+const {getPool} = require('./src/config/db')
+
 
 const userRouter = require('./src/routes/users')
 const authRouter = require('./src/routes/auth')
@@ -53,9 +55,25 @@ app.use((err, req, res, next) => {
     res.status(500).json({error: "something broke"})
 })
 
+
+// async function testConnection(){
+//     const pool = await getPool();
+
+//     const result = await pool.request().query(`
+//         SELECT
+//         DB_NAME() AS databaseName,
+//         @@SERVERNAME AS serverName,
+//         SCHEMA_NAME() AS schemaName
+//         `);
+
+//     console.log(result.recordset[0]);
+// }
+
 async function startServer(){
     try{
         await connectDB()
+
+        // await testConnection()
 
         app.listen(port, () => {
             console.log(`Backend app listening on http://localhost:${port}`)

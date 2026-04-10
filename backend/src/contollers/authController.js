@@ -1,5 +1,6 @@
-const {authenticateUser, registerUser} = require('../services/authServices')
+const {authenticateUser} = require('../services/authServices')
 const sanitizeUser = require('../utils/sanitizeUser')
+const registerUser = require('../repositories/authRepository')
 
 async function login(req, res){
     const { username, password } = req.body

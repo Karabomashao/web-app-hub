@@ -9,9 +9,13 @@ const {
   deleteUser,
 } = require('../services/userService')
 
-function getUsers(req, res) {
+async function getUsers(req, res) {
+
+  const users = await getAllUsers()
+  console.log(sanitizeUser(req.user))
+
   res.json({
-    users: getAllUsers().map(sanitizeUser),
+    users: users.map(sanitizeUser),
     authenticatedUser: sanitizeUser(req.user),
   })
 }

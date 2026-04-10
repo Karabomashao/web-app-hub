@@ -12,7 +12,7 @@ export default function Login(){
     
 
         try{
-            const res = await fetch('http://localhost:3000/api/login', {
+            const res = await fetch('http://localhost:3000/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
@@ -38,7 +38,7 @@ export default function Login(){
 
     async function getProtectedUser(){
         try {
-            const res = await fetch('http://localhost:3000/api/users/123', {
+            const res = await fetch('http://localhost:3000/api/users/1', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

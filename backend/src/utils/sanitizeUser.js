@@ -1,8 +1,11 @@
 function sanitizeUser(user){
     return {
-        id: user.id,
-        username: user.username,
-        role: user.role
+        id: user.Id,
+        fistName: user.FirstName,
+        lastName: user.LastName,
+        username: user.Email,
+        role: user.Role
+
     }
 }
 

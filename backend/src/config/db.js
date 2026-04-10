@@ -20,7 +20,9 @@ async function connectDB() {
 
   try {
     pool = await sql.connect(config)
+    
     console.log("Connected to Azure SQL with Microsoft Entra ID!")
+
   } catch (error) {
     console.log("Connection failed", error)
     throw error
@@ -32,6 +34,7 @@ function getPool() {
 }
 
 module.exports = {
+  sql,
   connectDB,
   getPool,
 }

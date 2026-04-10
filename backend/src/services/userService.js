@@ -1,9 +1,22 @@
 const users = require('../data/users')
 const generateUserId = require('../utils/generateUserId')
+const { getPool } = require('../config/db')
 
 
-function getAllUsers(){
-    return users
+async function getAllUsers() {
+  try {
+    const pool = await getPool();
+
+    const result = await pool
+      .request()
+      .query('SELECT * FROM dbo.Users');
+
+    return result.recordset;
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    throw err;
+  }
+
 }
 
 function getUserById(id){
