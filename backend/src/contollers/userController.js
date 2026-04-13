@@ -48,6 +48,8 @@ async function updateUserById(req, res, next) {
 
     const {firstName, lastName, phoneNumber} = req.body
 
+  
+
     if (req.body.username !== undefined) {
       const userWithSameUsername = await getUserByUsername(req.body.username)
 
@@ -79,7 +81,8 @@ async function updateUserById(req, res, next) {
     //   updates.role = req.body.role
     // }
 
-    const updatedUser = updateUser(requestedUserId, {firstName, lastName, phoneNumber})
+    const updatedUser = await updateUser(requestedUserId, {firstName, lastName, phoneNumber})
+    console.log(updatedUser)
 
     res.json({
       message: 'User updated',

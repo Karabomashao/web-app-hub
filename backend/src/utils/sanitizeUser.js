@@ -1,7 +1,7 @@
 function sanitizeUser(user){
     return {
         id: user.Id,
-        fistName: user.FirstName,
+        firstName: user.FirstName,
         lastName: user.LastName,
         username: user.Email,
         role: user.Role,
