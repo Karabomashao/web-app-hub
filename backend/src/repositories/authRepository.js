@@ -5,6 +5,7 @@ const { sql } = require('../config/db')
 
 async function registerUser({username, password, role}){
 
+    
     const users = await getAllUsers()
     const existingUser = users.find((user) => user.username === username)
 

@@ -1,13 +1,16 @@
 const sanitizeUser = require('../utils/sanitizeUser')
 const { hashPassword } = require('../services/authServices')
 const {
-  getAllUsers,
-  getUserById,
-  getUserByUsername,
   createUser,
-  updateUser,
   deleteUser,
 } = require('../services/userService')
+
+const { 
+  getUserById,
+  getAllUsers,
+  getUserByUsername,
+  updateUser
+ } = require('../repositories/userRepository')
 
 async function getUsers(req, res) {
 
@@ -37,33 +40,46 @@ function getUser(req, res) {
 async function updateUserById(req, res, next) {
   try {
     const requestedUserId = Number(req.params.id)
-    const existingUser = getUserById(requestedUserId)
+    const existingUser = await getUserById(requestedUserId)
 
-    if (!existingUser) {
+    if (!existingUser || existingUser.length === 0) {
       return res.status(404).json({ error: 'User not found' })
     }
 
-    const updates = {}
+    const {firstName, lastName, phoneNumber} = req.body
 
     if (req.body.username !== undefined) {
-      const userWithSameUsername = getUserByUsername(req.body.username)
+      const userWithSameUsername = await getUserByUsername(req.body.username)
 
-      if (userWithSameUsername && userWithSameUsername.id !== requestedUserId) {
+      if (userWithSameUsername && userWithSameUsername[0].Id !== requestedUserId) {
         return res.status(409).json({ error: 'Username already exists' })
       }
 
-      updates.username = req.body.username
+      // updates.username = req.body.username
     }
 
-    if (req.body.password !== undefined) {
-      updates.password = await hashPassword(req.body.password)
-    }
+    // if (req.body.firstName !== undefined){
+    //   updates.FirstName = req.body.firstName
+    // }
 
-    if (req.body.role !== undefined) {
-      updates.role = req.body.role
-    }
+    // if (req.body.lastName !== undefined){
+    //   updates.LastName = req.body.LastName
+    // }
 
-    const updatedUser = updateUser(requestedUserId, updates)
+    // if (req.body.phoneNumber !== undefined){
+    //   updates.PhoneNumber = req.body.phoneNumber
+    // }
+
+
+    // if (req.body.password !== undefined) {
+    //   updates.password = await hashPassword(req.body.password)
+    // }
+
+    // if (req.body.role !== undefined) {
+    //   updates.role = req.body.role
+    // }
+
+    const updatedUser = updateUser(requestedUserId, {firstName, lastName, phoneNumber})
 
     res.json({
       message: 'User updated',

@@ -11,8 +11,8 @@ async function login(req, res){
         return res.status(401).json({error: 'Invalid credentials'})
     }
 
-    res.json({token})
-
+    console.log(token)
+    res.json(token)
 }
 
 async function register(req, res){

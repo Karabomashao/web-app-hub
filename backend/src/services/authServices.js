@@ -3,13 +3,13 @@ const bcrypt = require('bcrypt')
 const users = require('../data/users')
 const generateUserId = require('../utils/generateUserId')
 const { getPool } = require('../config/db')
-const getAllUsers = require('../repositories/userRepository')
+const { getAllUsers } = require('../repositories/userRepository')
+const sanitizeUser = require('../utils/sanitizeUser')
 
 async function authenticateUser(username, password) {
   
   const users = await getAllUsers()
   const user = users.find((user) => user.Email === username)
-  console.log(user)
 
   if (!user) {
     return null
@@ -31,7 +31,10 @@ async function authenticateUser(username, password) {
     { expiresIn: '1h' }
   )
 
-  return token
+  return {
+    token: token,
+    user: sanitizeUser(user)
+  }
 }
 
 async function hashPassword(password) {

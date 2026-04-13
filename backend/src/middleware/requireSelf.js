@@ -7,7 +7,7 @@ function requireSelf(req, res, next){
     }
 
     if (requestUserId !== req.user.id){
-        return res.status(403).json({error : 'Forbidden'})
+        return res.status(403).json({error : 'Forbidden check also here'})
     }
 
     next()

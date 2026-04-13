@@ -4,7 +4,8 @@ function sanitizeUser(user){
         fistName: user.FirstName,
         lastName: user.LastName,
         username: user.Email,
-        role: user.Role
+        role: user.Role,
+        phoneNumber: user.PhoneNumber
 
     }
 }

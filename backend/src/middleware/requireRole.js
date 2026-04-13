@@ -6,6 +6,8 @@ function requireRole(role){
 
         console.log(req.user)
         console.log("That print is from here")
+        console.log(req.user)
+        console.log(role)
         if (req.user.role !== role){
             return res.status(403).json({error: 'Forbidden stucks here'})
         }
