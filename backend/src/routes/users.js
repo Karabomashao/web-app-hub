@@ -9,6 +9,7 @@ const {
   getUsers,
   getUser,
   updateUserById,
+  updateCompanyByUserId,
   deleteUserById,
   createUserByAdmin,
 } = require('../contollers/userController')
@@ -21,6 +22,7 @@ router.use((req, res, next) => {
 router.get('/', requireAuth, requireRole('admin'), getUsers)
 router.get('/:id', requireAuth, requireSelf, getUser)
 router.put('/:id', requireAuth, requireSelf, validateUpdateUserBody, updateUserById)
+router.put('/company/:id', requireAuth, validateUpdateUserBody, updateCompanyByUserId)
 router.delete('/:id', requireAuth, requireSelf, deleteUserById)
 router.post('/', requireAuth, requireRole('admin'), validateUserBody, createUserByAdmin)
 

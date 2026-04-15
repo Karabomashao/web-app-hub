@@ -16,9 +16,15 @@ async function login(req, res){
 }
 
 async function register(req, res){
-    const {username, password, role} = req.body
+    const {
+            username, 
+            password, 
+            role,
+            companyName,
+            registrationNumber
+        } = req.body
 
-    const newUser = await registerUser({username, password, role})
+    const newUser = await registerUser({username, password, companyName, registrationNumber, role})
 
     if (!newUser){
         return res.status(409).json({error: 'Username already exits'})
@@ -27,7 +33,6 @@ async function register(req, res){
     res.status(201).json(
         {
             message: 'User created',
-            user: sanitizeUser(newUser)
         }
     )
 

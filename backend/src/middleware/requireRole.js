@@ -5,7 +5,7 @@ function requireRole(role){
         }
 
         if (req.user.role !== role){
-            return res.status(403).json({error: 'Forbidden stucks here'})
+            return res.status(403).json({error: 'Forbidden'})
         }
 
         next()

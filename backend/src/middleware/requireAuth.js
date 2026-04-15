@@ -15,7 +15,7 @@ function requireAuth(req, res, next){
         req.user = decoded
         next()
     } catch (err) {
-        return res.status(403).json({ error: 'Forbidden check here'})
+        return res.status(403).json({ error: 'Forbidden'})
     }
 
     // if(!expectedToken){
